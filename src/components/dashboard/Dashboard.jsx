@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { activityAPI, recommendationAPI } from '../../services/api';
 import ActivityForm from '../activities/ActivityForm';
 import ActivityList from '../activities/ActivityList';
 import Recommendations from '../recommendations/Recommendations';
-import Navbar from '../layout/Navbar';  // Import Navbar
+import Navbar from '../layout/Navbar';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -13,11 +13,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('activities');
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  // Wrap fetchData in useCallback to prevent infinite loops
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const activitiesRes = await activityAPI.getAll(user.id);
@@ -30,7 +27,11 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user.id]); // Add user.id as dependency
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]); // Now fetchData is included correctly
 
   const handleActivityAdded = (newActivity) => {
     setActivities([newActivity, ...activities]);
@@ -50,10 +51,9 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar /> {/* Add Navbar here */}
+      <Navbar />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow-md p-6">
             <p className="text-gray-500 text-sm">Total Activities</p>
@@ -76,7 +76,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           <div className="border-b border-gray-200">
             <nav className="flex space-x-8 px-6">
