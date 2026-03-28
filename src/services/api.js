@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://fitness-monolith-u4so.onrender.com';
+const API_BASE_URL = "https://fitness-monolith-u4so.onrender.com/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
