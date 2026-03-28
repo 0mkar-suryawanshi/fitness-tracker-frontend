@@ -1,70 +1,174 @@
-# Getting Started with Create React App
+# Fitness Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full‑stack web application to log workouts, track calories, and receive personalized fitness recommendations.
 
-## Available Scripts
+🔗 **Live Demo:** [fintness-monolith.netlify.app](https://fintness-monolith.netlify.app)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## ✨ Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- 🔐 **User Authentication** – Register & login with JWT
+- 📊 **Activity Logging** – Add activities (running, cycling, strength, yoga) with duration, calories, and custom metrics
+- 📈 **Dashboard** – View total activities, calories burned, and average duration
+- 💡 **Smart Recommendations** – Get personalized improvement tips, suggestions, and safety advice
+- 📱 **Responsive Design** – Works on desktop, tablet, and mobile
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🛠️ Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Layer          | Technology |
+|----------------|------------|
+| **Frontend**   | React, React Router, Axios, Tailwind CSS – hosted on Netlify |
+| **Backend**    | Spring Boot, Spring Security, Spring Data JPA, PostgreSQL – containerized with Docker, deployed on Render |
+| **Database**   | Neon (serverless PostgreSQL) |
+| **Auth**       | JWT (JSON Web Tokens) |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🏗️ Architecture
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- The **React frontend** communicates with the **Spring Boot REST API**.
+- JWT is stored in `localStorage` and sent with every authenticated request.
+- **PostgreSQL** (Neon) stores users, activities, and recommendations.
+- The backend is Dockerized and deployed on Render; the frontend is deployed on Netlify.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🚀 Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Prerequisites
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Java 17+
+- Node.js 18+ & npm
+- Docker (optional, for local containerized run)
+- PostgreSQL (local or use Neon)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Backend Setup
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/0mkar-suryawanshi/fitness-monolith.git
+   cd fitness-monolith
+Configure database
+Create a PostgreSQL database (e.g., fitness_db) and update src/main/resources/application.properties:
 
-## Learn More
+properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/fitness_db
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+Run the application
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+bash
+./mvnw spring-boot:run
+The backend will start at http://localhost:8080.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Frontend Setup
+Clone the repository
 
-### Code Splitting
+bash
+git clone https://github.com/0mkar-suryawanshi/fitness-tracker-frontend.git
+cd fitness-tracker-frontend
+Install dependencies
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+bash
+npm install
+Set environment variable
+Create a .env file in the root:
 
-### Analyzing the Bundle Size
+env
+REACT_APP_API_URL=http://localhost:8080/api
+Run the development server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+bash
+npm start
+The frontend will be available at http://localhost:3000.
 
-### Making a Progressive Web App
+Now you can register a user and start logging activities.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+🔐 Environment Variables
+Backend (application.properties)
+DB_URL – JDBC URL for PostgreSQL
 
-### Advanced Configuration
+DB_USERNAME – database username
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+DB_PASSWORD – database password
 
-### Deployment
+FRONTEND_URL – URL of the frontend (used for CORS)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Frontend (.env or Netlify)
+REACT_APP_API_URL – base URL of the backend API (must include /api)
 
-### `npm run build` fails to minify
+🌐 Deployment
+Backend on Render
+Push your backend code to GitHub.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Create a new Web Service on Render and connect your repository.
+
+Choose Docker as the environment (uses your Dockerfile).
+
+Add environment variables (see above).
+
+Deploy.
+
+Frontend on Netlify
+Push your frontend code to GitHub.
+
+Log in to Netlify and click New site from Git.
+
+Connect your repository and set:
+
+Build command: npm run build
+
+Publish directory: build
+
+Add the environment variable REACT_APP_API_URL pointing to your live backend (e.g., https://your-backend.onrender.com/api).
+
+Deploy.
+
+📚 API Documentation
+Once the backend is running, you can access Swagger UI at:
+
+text
+http://localhost:8080/swagger-ui.html
+Main endpoints:
+
+POST /api/auth/register – register a new user
+
+POST /api/auth/login – authenticate and receive JWT
+
+GET /api/activities – get all activities (requires X-User-ID header)
+
+POST /api/activities – create a new activity
+
+GET /api/recommendation/user/{userId} – get recommendations for a user
+
+GET /api/recommendation/activity/{activityId} – get recommendations for an activity
+
+🤝 Contributing
+Contributions are welcome! Please follow these steps:
+
+Fork the project.
+
+Create your feature branch (git checkout -b feature/AmazingFeature).
+
+Commit your changes (git commit -m 'Add some AmazingFeature').
+
+Push to the branch (git push origin feature/AmazingFeature).
+
+Open a Pull Request.
+
+
+🙏 Acknowledgements
+Spring Boot – backend framework
+
+React – frontend library
+
+Neon – serverless PostgreSQL
+
+Render – backend hosting
+
+Netlify – frontend hosting
+
+Built with ❤️ by Omkar Suryawanshi
